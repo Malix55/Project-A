@@ -1,0 +1,16 @@
+<div class="card card-body">
+    <h1 style="text-align: center;"><i class="fa-solid fa-right-to-bracket"></i>Login</h1>
+    <form action="/users/login" method="POST" novalidate>
+        <div class="form-group">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" name="email" id="email">
+        </div>
+        <div class="form-group">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" id="password">
+        </div>
+        <button type="submit" class="btn btn-primary mt-5">Login</button>
+        <hr>
+        <h6>Don't have an account? <a href="/users/register">Register</a></h6>
+    </form>
+</div>
