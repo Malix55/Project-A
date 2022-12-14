@@ -17,10 +17,10 @@ router.post("/register", (req, res) => {
     errors.push({ mgs: "Please fill out the form" });
   }
   if (password != password1) {
-    errors.push({ mgs: "Passwords do not match" });
+    errors.push({ msg: "Passwords do not match" });
   }
   if (password.length < 6) {
-    errors.push({ mgs: "Password should be atleast 6 characters" });
+    errors.push({ msg: "Password should be atleast 6 characters" });
   }
 
   if (errors.length > 0) {
@@ -34,6 +34,7 @@ router.post("/register", (req, res) => {
   } else {
     res.send("pass");
   }
+  console.log(errors);
 });
 
 module.exports = router;
