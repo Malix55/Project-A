@@ -1,5 +1,9 @@
 const express = require("express");
+const bcrypt = require("bcryptjs");
+
 const router = express.Router();
+
+const User = require("../models/User");
 
 router.get("/login", (req, res) => {
   res.render("login");
@@ -14,7 +18,7 @@ router.post("/register", (req, res) => {
   const errors = [];
 
   if (!username || !email || !password || !password1) {
-    errors.push({ mgs: "Please fill out the form" });
+    errors.push({ msg: "Please fill out the form" });
   }
   if (password != password1) {
     errors.push({ msg: "Passwords do not match" });
@@ -32,7 +36,38 @@ router.post("/register", (req, res) => {
       password1,
     });
   } else {
-    res.send("pass");
+    User.findOne({
+      email: email,
+    }).then((user) => {
+      if (user) {
+        errors.push({
+          msg: "This email already exists",
+        });
+        res.render("register", {
+          errors,
+          username,
+          email,
+          password,
+          password1,
+        });
+      } else {
+        const newUser = new User({
+          username,
+          email,
+          password,
+        });
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) throw err;
+            newUser.password = hash;
+            newUser
+              .save()
+              .then(res.redirect("/users/login"))
+              .catch((err) => console.log(err));
+          });
+        });
+      }
+    });
   }
   console.log(errors);
 });
